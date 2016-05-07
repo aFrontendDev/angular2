@@ -1,35 +1,34 @@
 import {Component} from '@angular/core';
-
-export class Item {
-    id: number;
-    name: string;
-}
+import {Http, Response} from '@angular/http';
+import {Observable} from 'rxjs/Rx';
 
 @Component({
     selector: 'my-app',
     template: `
         <h1>My First Angular 2 App</h1>
         <ul>
-            <li *ngFor="#item of items">
+            <li *ngFor="let item of items">
                 {{item.id}} | {{item.name}}
             </li>
         </ul>
     `
 })
 export class AppComponent {
-    title = 'Things';
-    items = ITEMS;
-}
+    public items;
+    
+    constructor(private http: Http) {}
+    
+    ngOnInit() {
+        this.getItems();
+    }
 
-var ITEMS: Item[] = [
-    { "id": 1, "name": "One" },
-    { "id": 2, "name": "Two" },
-    { "id": 3, "name": "Three" },
-    { "id": 4, "name": "Four" },
-    { "id": 5, "name": "Five" },
-    { "id": 6, "name": "Six" },
-    { "id": 7, "name": "Seven" },
-    { "id": 8, "name": "Eight" },
-    { "id": 9, "name": "Nine" },
-    { "id": 10, "name": "Ten" }
-];
+    getItems() {
+        this.http.get('/app/items.json')
+            .map((res:Response) => res.json())
+            .subscribe(
+                data => {this.items = data},
+                err => console.log(err),
+                () => console.log(this.items)
+            );
+    }
+}
