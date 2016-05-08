@@ -2,6 +2,11 @@ import {Component} from '@angular/core';
 import {Http, Response} from '@angular/http';
 import {Observable} from 'rxjs/Rx';
 
+export class Item {
+    id: number;
+    name: string;
+}
+
 @Component({
     selector: 'my-app',
     template: `
@@ -14,7 +19,7 @@ import {Observable} from 'rxjs/Rx';
     `
 })
 export class AppComponent {
-    public items;
+    public items: Item;
     
     constructor(private http: Http) {}
     
